@@ -14,6 +14,7 @@ def top_up(amount)
 end
 
 def deduct(amount)
+	raise "Not A Valid Amount." if !amount.is_a?(Numeric) || amount.negative? || amount == 0
 	@balance -= amount
 end
 

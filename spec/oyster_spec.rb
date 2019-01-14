@@ -12,7 +12,7 @@ describe Oystercard do
   		subject.top_up(2)
   		expect(subject.balance).to eq 5
   	end
-    it "only takes positive numbers" do
+    it "throws error if invalid amount" do
       expect{subject.top_up(-1)}.to raise_error("Not A Valid Amount.")
       expect{subject.top_up("string")}.to raise_error("Not A Valid Amount.")
     end
@@ -26,6 +26,10 @@ describe Oystercard do
   		subject.instance_variable_set(:@balance, 5)
   		subject.deduct(3)
   		expect(subject.balance).to eq 2
+  	end
+  	it "throws error if invalid amount" do
+      expect{subject.deduct(-1)}.to raise_error("Not A Valid Amount.")
+      expect{subject.deduct("string")}.to raise_error("Not A Valid Amount.")
   	end
   end
 end
