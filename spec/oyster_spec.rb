@@ -16,5 +16,9 @@ describe Oystercard do
       expect{subject.top_up(-1)}.to raise_error
       expect{subject.top_up("string")}.to raise_error
     end
+    it "throws error if topped up past max balance (£90)" do
+      subject.instance_variable_set(:@balance,85)
+      expect { subject.top_up(6) }.to raise_error 
+    end
   end
 end
