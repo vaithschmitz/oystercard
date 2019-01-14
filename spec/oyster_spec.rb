@@ -3,7 +3,7 @@ require 'oystercard'
 describe Oystercard do
   context "@balance" do
     it "checks if card has balance" do
-      expect(subject.instance_variable_get(:@balance)).to eq 1
+      expect(subject.instance_variable_get(:@balance)).to eq 0
     end
   end
   context "#top_up" do
@@ -13,12 +13,12 @@ describe Oystercard do
   		expect(subject.balance).to eq 5
   	end
     it "only takes positive numbers" do
-      expect{subject.top_up(-1)}.to raise_error
-      expect{subject.top_up("string")}.to raise_error
+      expect{subject.top_up(-1)}.to raise_error("Not A Valid Amount.")
+      expect{subject.top_up("string")}.to raise_error("Not A Valid Amount.")
     end
     it "throws error if topped up past max balance (£90)" do
       subject.instance_variable_set(:@balance,85)
-      expect { subject.top_up(6) }.to raise_error 
+      expect { subject.top_up(6) }.to raise_error("Exceeding maximum balance (#{Oystercard::MAX_BALANCE}).")
     end
   end
 end
