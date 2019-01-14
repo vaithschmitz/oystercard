@@ -31,5 +31,23 @@ describe Oystercard do
       expect{subject.deduct(-1)}.to raise_error("Not A Valid Amount.")
       expect{subject.deduct("string")}.to raise_error("Not A Valid Amount.")
   	end
+  context "#touch_in" do
+    it " can touch in and begin journey" do
+      subject.instance_variable_set(:@card_in_use, false)
+      subject.touch_in
+      expect(subject.in_journey?).to eq(true)
+    end
+  end
+  context "#touch_out" do
+    it " can touch out and end journey" do
+      subject.instance_variable_set(:@card_in_use, true)
+      subject.touch_out
+      expect(subject.in_journey?).to eq(false)
+    end
+
+  end
+  context "#in_journey" do
+    it { is_expected.to respond_to(:in_journey?) }
+  end
   end
 end

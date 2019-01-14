@@ -5,6 +5,7 @@ MAX_BALANCE = 90
 
 def initialize
   @balance = 0
+  @card_in_use = false
 end
 
 def top_up(amount)
@@ -20,6 +21,18 @@ end
 
 def invalid_amount?(amount)
 	!amount.is_a?(Numeric) || amount.negative? || amount == 0
+end
+
+def touch_in
+  @card_in_use = true
+end
+
+def touch_out
+  @card_in_use = false
+end
+
+def in_journey?
+  @card_in_use
 end
 
 end
