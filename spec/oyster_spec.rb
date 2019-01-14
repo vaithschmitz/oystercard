@@ -6,4 +6,11 @@ describe Oystercard do
       expect(subject.instance_variable_get(:@balance)).to eq 1
     end
   end
+  context "#top_up" do
+  	it "can add to balance" do
+      subject.instance_variable_set(:@balance, 3)
+  		subject.top_up(2)
+  		expect(subject.balance).to eq 5
+  	end
+  end
 end
