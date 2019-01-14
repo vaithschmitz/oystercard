@@ -12,5 +12,9 @@ describe Oystercard do
   		subject.top_up(2)
   		expect(subject.balance).to eq 5
   	end
+    it "only takes positive numbers" do
+      expect{subject.top_up(-1)}.to raise_error
+      expect{subject.top_up("string")}.to raise_error
+    end
   end
 end
