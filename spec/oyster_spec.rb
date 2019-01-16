@@ -1,6 +1,9 @@
 require 'oystercard'
 
 describe Oystercard do
+
+let(:station) {double :station}
+
   context "@balance" do
     it "checks if card has balance" do
       expect(subject.instance_variable_get(:@balance)).to eq 0
@@ -28,6 +31,16 @@ describe Oystercard do
       subject.touch_in
       expect(subject.in_journey?).to eq(true)
     end
+    it "card remembers entry station" do
+      subject.instance_variable_set(:@balance, 30)
+      subject.touch_in(station)
+      expect(subject.instance_variable_get(:@entry_station)).to eq station
+    end
+    it "card knows it's in journey after touching in" do 
+      subject.instance_variable_set(:@balance, 30)
+      subject.touch_in(station)
+      expect(subject.in_journey?).to eq(true)
+    end
   end
 
   context "#touch_out" do
@@ -39,6 +52,10 @@ describe Oystercard do
     it "deducts fare from balance upon touching out" do
       subject.instance_variable_set(:@balance, 20) 
       expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MIN_FARE)
+    end
+    it "expect card to forget entry station when touching out" do
+      subject.touch_out
+      expect(subject.instance_variable_get(:@entry_station)).to eq nil
     end
   end
 
