@@ -59,9 +59,16 @@ let(:station) {double :station}
     end
   end
 
-  context "#in_journey" do
-    it { is_expected.to respond_to(:in_journey?) }
+  context "@journey_history" do
+    it "every card starts with an empty journey history" do 
+      expect(subject.instance_variable_get(:@journey_history)).to be_empty
+    end
+    it "creates a journey after touching in and out" do
+      subject.instance_variable_set(:@balance, 30)
+      subject.touch_in("here")
+      subject.touch_out("there")
+      expect(subject.instance_variable_get(:@journey_history)).to include("here" => "there")
     end
   end
-
+end
 
