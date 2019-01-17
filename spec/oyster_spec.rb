@@ -4,6 +4,7 @@ describe Oystercard do
 
 let(:station) {double :station}
 
+
   context "@balance" do
     it "checks if card has balance" do
       expect(subject.instance_variable_get(:@balance)).to eq 0
@@ -34,7 +35,7 @@ let(:station) {double :station}
     it "card remembers entry station" do
       subject.instance_variable_set(:@balance, 30)
       subject.touch_in(station)
-      expect(subject.instance_variable_get(:@entry_station)).to eq station
+      expect(subject.journey_history).to include(station)
     end
     it "card knows it's in journey after touching in" do 
       subject.instance_variable_set(:@balance, 30)
@@ -45,8 +46,9 @@ let(:station) {double :station}
 
   context "#touch_out" do
     it "can touch out and end journey" do
-      subject.instance_variable_set(:@card_in_use, true)
-      subject.touch_out
+      subject.top_up(20)
+      subject.touch_in(station)
+      subject.touch_out(station)
       expect(subject.in_journey?).to eq(false)
     end
     it "deducts fare from balance upon touching out" do
@@ -67,7 +69,7 @@ let(:station) {double :station}
       subject.instance_variable_set(:@balance, 30)
       subject.touch_in("here")
       subject.touch_out("there")
-      expect(subject.instance_variable_get(:@journey_history)).to include("here" => "there")
+      expect(subject.instance_variable_get(:@journey_history)).to include("here", "there")
     end
   end
 end
